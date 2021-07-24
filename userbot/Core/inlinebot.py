@@ -1,4 +1,4 @@
-#file written by @t7ttt7
+# file written by @t7ttt7
 # code by  @t7ttt7
 
 import json
@@ -7,18 +7,18 @@ import os
 import random
 import re
 import time
-from uuid import uuid4
 from platform import python_version
+from uuid import uuid4
 
 from telethon import Button, types, version
 from telethon.errors import QueryIdInvalidError
 from telethon.events import CallbackQuery, InlineQuery
 from youtubesearchpython import VideosSearch
 
-from userbot import jmthon, catversion, StartTime
+from userbot import StartTime, catversion, jmthon
 
 from ..Config import Config
-from ..helpers.functions import rand_key, catalive, check_data_base_heal_th, get_readable_time
+from ..helpers.functions import check_data_base_heal_th, get_readable_time, rand_key
 from ..helpers.functions.utube import (
     download_button,
     get_yt_video_id,
@@ -36,6 +36,7 @@ LOGS = logging.getLogger(__name__)
 BTN_URL_REGEX = re.compile(r"(\[([^\[]+?)\]\<buttonurl:(?:/{0,2})(.+?)(:same)?\>)")
 CATLOGO = "https://telegra.ph/file/9c1863041429d5163bf97.jpg"
 tr = Config.COMMAND_HAND_LER
+
 
 def getkey(val):
     for key, value in GRP_INFO.items():
@@ -378,46 +379,40 @@ async def inline_handler(event):  # sourcery no-metrics
             CAT_IMG = gvarstatus("ALIVE_PIC")
             alive_buttons = [
                 [
-                    Button.inline(
-                        text=f"{EMOJI} قاعدة البيانات : ✅"
-                    ),
-                ], 
-                [
-                    Button.inline(
-                        text=f"{EMOJI} الأصدار : {catversion}"
-                    ),
+                    Button.inline(text=f"{EMOJI} قاعدة البيانات : ✅"),
                 ],
                 [
-                    Button.inline(
-                        text=f"{EMOJI} التيليثون : {version.__version__}"
-                    ),
-                ],
-                [    
-                    Button.inline(
-                        text=f"{EMOJI} البايثون : {python_version()}"
-                    ),
+                    Button.inline(text=f"{EMOJI} الأصدار : {catversion}"),
                 ],
                 [
-                    Button.inline(
-                        text=f"{EMOJI} الوقت : {uptime}"
-                    ),
+                    Button.inline(text=f"{EMOJI} التيليثون : {version.__version__}"),
                 ],
-                [   
-                    Button.inline(
-                        text=f"{EMOJI} المالك : {Config.ALIVE_NAME}"
-                    ),
+                [
+                    Button.inline(text=f"{EMOJI} البايثون : {python_version()}"),
+                ],
+                [
+                    Button.inline(text=f"{EMOJI} الوقت : {uptime}"),
+                ],
+                [
+                    Button.inline(text=f"{EMOJI} المالك : {Config.ALIVE_NAME}"),
                 ],
             ]
-            await event.answer([
-                builder.article(
-                    title="Ialive", 
-                    description="Alive MSG", 
-                    text=CUSTOM_ALIVE_TEXT, 
-                    thumb=InputWebDocument(url=CAT_IMG, size=42, mime_type="image/jpeg", attributes=[]) if CAT_IMG else None, 
-                    buttons=alive_buttons, 
-                    parse_mode="md"
-                ),
-            ])
+            await event.answer(
+                [
+                    builder.article(
+                        title="Ialive",
+                        description="Alive MSG",
+                        text=CUSTOM_ALIVE_TEXT,
+                        thumb=InputWebDocument(
+                            url=CAT_IMG, size=42, mime_type="image/jpeg", attributes=[]
+                        )
+                        if CAT_IMG
+                        else None,
+                        buttons=alive_buttons,
+                        parse_mode="md",
+                    ),
+                ]
+            )
         elif string == "help":
             _result = main_menu()
             result = builder.article(
@@ -498,7 +493,9 @@ async def inline_handler(event):  # sourcery no-metrics
                 )
         elif string == "age_verification_alert":
             buttons = [
-                Button.inline(text="عـمري هو اكثـر مـن 18", data="age_verification_true"),
+                Button.inline(
+                    text="عـمري هو اكثـر مـن 18", data="age_verification_true"
+                ),
                 Button.inline(text="لا أنـا صغـير", data="age_verification_false"),
             ]
             markup = event.client.build_reply_markup(buttons)
